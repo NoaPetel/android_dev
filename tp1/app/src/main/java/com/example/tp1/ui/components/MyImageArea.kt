@@ -76,9 +76,9 @@ fun MyImageArea(
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = {
-            it?.let {
-                onSetUri.invoke(it)
+        onResult = {uri ->
+            uri?.let {
+                onSetUri.invoke(uri)
             }
         }
     )
@@ -100,8 +100,6 @@ fun MyImageArea(
             val tmpUri = getTempUri()
             tempUri.value = tmpUri
             takePhotoLauncher.launch(tempUri.value)
-        } else {
-            // Permission is denied, handle it accordingly
         }
     }
 
@@ -113,14 +111,13 @@ fun MyImageArea(
             },
             onTakePhotoClick = {
                 showBottomSheet = false
-
                 val permission = Manifest.permission.CAMERA
                 if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
                 ) {
                     // Permission is already granted, proceed to step 2
                     val tmpUri = getTempUri()
                     tempUri.value = tmpUri
-                    takePhotoLauncher.launch(tempUri.value)
+                    tmpUri?.let{ takePhotoLauncher.launch(it)}
                 } else {
                     // Permission is not granted, request it
                     cameraPermissionLauncher.launch(permission)

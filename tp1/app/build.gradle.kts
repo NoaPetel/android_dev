@@ -9,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.tp1"
+        applicationId = "com.example.tp1F"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -74,4 +74,13 @@ dependencies {
     implementation(libs.compose.destinations.core)
     ksp(libs.compose.destinations.ksp)
 
+    // Retrofit for API requests
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // ViewModel and LiveData for MVVM architecture
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.3.1")
+
+    // Koin
+    implementation("io.insert-koin:koin-androidx-compose:3.2.0")
 }

@@ -1,6 +1,7 @@
 package com.example.tp1.ui.screens
 
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -54,10 +55,12 @@ enum class ProductType{
 
 @com.ramcosta.composedestinations.annotation.Destination
 @Composable
-fun ViewB(navigator: DestinationsNavigator, name: String, resultNavigator: ResultBackNavigator<String>){
+fun ViewB(
+    navigator: DestinationsNavigator,
+    name: String,
+    resultNavigator: ResultBackNavigator<String>){
 
     var color by remember { mutableStateOf(Color.Black) }
-    var textbox by remember { mutableStateOf(mutableListOf<String>())}
     var selectedImageUri by remember { mutableStateOf<Uri?>(null)}
     var state by remember { mutableStateOf(ProductType.Consommable) }
     val context = LocalContext.current
@@ -116,7 +119,7 @@ fun ViewB(navigator: DestinationsNavigator, name: String, resultNavigator: Resul
         }
 
         Box(modifier = Modifier
-            .size(100.dp)
+            .size(70.dp)
             .background(color))
 
 
@@ -157,13 +160,19 @@ fun ViewB(navigator: DestinationsNavigator, name: String, resultNavigator: Resul
 
         Button(
             onClick = {
-                Toast.makeText(
-                    context, "Le produit de type " + state + " a été ajouté par " +
-                            textbox[0] + " " + textbox[1],
-                    Toast.LENGTH_LONG
-                ).show()
-                resultNavigator.navigateBack("Test")
-            },
+                if (value1.isNotBlank() && value2.isNotBlank()) {
+                    val textbox = listOf(value1, value2, color, date,  state.toString())
+
+                    Toast.makeText(
+                        context, "Le produit de type " + state + " a été ajouté par " +
+                                textbox[0] + " " + textbox[1],
+                        Toast.LENGTH_LONG
+                    ).show()
+                    resultNavigator.navigateBack(textbox.joinToString(separator = ";"))
+                } else {
+                    Toast.makeText(context, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
+                }
+            }
         ) {
             Text("Valider")
         }
